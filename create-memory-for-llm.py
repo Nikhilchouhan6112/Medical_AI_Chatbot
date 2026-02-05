@@ -1,7 +1,7 @@
 import os
 from langchain_community.document_loaders import PyPDFLoader, DirectoryLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_huggingface import HuggingFaceInferenceAPIEmbeddings
+from langchain_huggingface import HuggingFaceEndpointEmbeddings
 from langchain_community.vectorstores import FAISS
 from dotenv import load_dotenv, find_dotenv
 
@@ -27,9 +27,9 @@ text_chunks=create_chunks(extracted_data=documents)
 
 #step 3: Create Vector Embeddings
 def get_embedding_model():
-    embedding_model = HuggingFaceInferenceAPIEmbeddings(
-        api_key=HF_TOKEN, 
-        model_name="sentence-transformers/all-MiniLM-L6-v2"
+    embedding_model = HuggingFaceEndpointEmbeddings(
+        model= "sentence-transformers/all-MiniLM-L6-v2",
+        huggingfacehub_api_token=HF_TOKEN
     )
     return embedding_model
 

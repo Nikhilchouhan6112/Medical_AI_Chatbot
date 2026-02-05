@@ -1,7 +1,7 @@
 import os
 import streamlit as st
 
-from langchain_huggingface import HuggingFaceEmbeddings, ChatHuggingFace, HuggingFaceEndpoint, HuggingFaceInferenceAPIEmbeddings
+from langchain_huggingface import ChatHuggingFace, HuggingFaceEndpoint, HuggingFaceEndpointEmbeddings
 from langchain.chains import RetrievalQA
 
 from langchain_community.vectorstores import FAISS
@@ -16,9 +16,9 @@ HF_TOKEN=os.environ.get("HF_TOKEN")
 DB_FAISS_PATH="vectorstore/db_faiss"
 @st.cache_resource
 def get_vectorstore():
-    embedding_model = HuggingFaceInferenceAPIEmbeddings(
-        api_key=HF_TOKEN, 
-        model_name="sentence-transformers/all-MiniLM-L6-v2"
+    embedding_model = HuggingFaceEndpointEmbeddings(
+        model= "sentence-transformers/all-MiniLM-L6-v2",
+        huggingfacehub_api_token=HF_TOKEN
     )
     db=FAISS.load_local(DB_FAISS_PATH, embedding_model, allow_dangerous_deserialization=True)
     return db
